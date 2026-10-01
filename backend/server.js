@@ -50,12 +50,15 @@ app.post('/api/upload', upload.single('imagem'), (req, res) => {
 });
 
 // ===== SERVIR O FRONTEND - ISSO CONSERTA O Cannot GET / =====
-app.use(express.static(path.join(__dirname, 'frontend')));
+app.use(express.static(path.join(__dirname, '..', 'frontend')));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Essa tem que ser a ULTIMA rota
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
+app.get('/{*any}', (req, res) => {
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ error: 'Rota da API não encontrada' });
+  }
+  res.sendFile(path.join(__dirname, '..', 'frontend', 'index.html'));
 });
 
 const PORT = process.env.PORT || 3000;
