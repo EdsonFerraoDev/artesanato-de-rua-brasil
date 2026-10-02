@@ -41,7 +41,7 @@ app.get('/api/produtos', (req, res) => {
 });
 
 // ROTA PRA VOLTAR O SITE
-app.get('/*', (req, res) => {
+app.use((req, res) => {
   res.sendFile(path.join(__dirname, 'frontend', 'index.html'));
 });
 
